@@ -1,0 +1,22 @@
+.gridContainer {
+    margin-top: 20px;
+
+    & > div:first-child {
+        margin-top: calc(var(--spacer-base) * 2);
+
+        @media screen and (min-width: 960px) {
+            margin-top: 0;
+        }
+    }
+
+    .leftGridContainer {
+        @media screen and (min-width: 960px) {
+            margin-right: var(--spacer-base);
+        }        
+    }
+    .rightGridContainer {
+        @media screen and (min-width: 960px) {
+            margin-left: var(--spacer-base);
+        }
+    }
+}

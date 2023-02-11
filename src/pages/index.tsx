@@ -1,11 +1,13 @@
-import Head from 'next/head';
-import { Card, Col, Container, Row, Text, Button } from '@nextui-org/react';
-import CreateRocketForm from '@/components/rocket-form/CreateRocketForm.component';
 import { ReactElement } from 'react';
-import RocketList from '@/components/rocket-list/RocketList.component';
+import Head from 'next/head';
+import { Grid, Spacer } from '@nextui-org/react';
+import CreateRocketForm from '@/components/rocket-form/CreateRocketForm.component';
+import RocketListContainer from '@/components/rocket-list/RocketListContainer.component';
 import { RocketProvider } from "@/contexts/rockets.context";
+import styles from '@/styles/Home.module.scss';
 
 export default function Home(): ReactElement {
+
   return (
     <>
       <Head>
@@ -16,24 +18,14 @@ export default function Home(): ReactElement {
       </Head>
       <main>
         <RocketProvider>
-          <Container gap={1} css={{ marginTop: 10 }} responsive={false}>
-            <Row>
-              <Col>
-                <Card css={{ $$cardColor: '#fefefe' }}>
-                  <Card.Body>
-                    <RocketList />
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col>
-                <Card css={{ $$cardColor: '#fefefe' }}>
-                  <Card.Body>
-                    <CreateRocketForm />
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
+          <Grid.Container className={styles.gridContainer} justify="center" wrap='wrap-reverse'>
+              <Grid className={styles.leftGridContainer} xs={10} sm={6}>
+                  <RocketListContainer />
+              </Grid>
+              <Grid className={styles.rightGridContainer} xs={10} sm={4}>
+                  <CreateRocketForm />
+              </Grid>
+          </Grid.Container>
         </RocketProvider>
       </main>
     </>
