@@ -1,18 +1,20 @@
+import { useContext, useState } from "react";
 import { Grid } from "@nextui-org/react";
-import { IRocketListItem } from "../types/basic";
+import { IRocketContextData, IRocketListItem } from "../types/basic";
 import styles from './RocketList.module.scss';
 import RocketListItem from "./RocketListItem.component";
+import { RocketContext } from "@/contexts/rockets.context";
 
 function RocketList(props: { rocketListData: Map<number, IRocketListItem> }) {
 
   const rocketList: Array<IRocketListItem> = Array.from(props.rocketListData.values());
 
   return (
-    <Grid.Container justify="center" css={{gap:"20px"}}>
+    <Grid.Container className={styles.rocketListContainer}>
       {
         rocketList.length ? rocketList.map((rocketInfo: IRocketListItem) => {
           return <RocketListItem key={rocketInfo.id} rocketInfo={rocketInfo} />
-        }) : <div>Nothing in memory yet!</div>
+        }) : <Grid>Nothing in memory yet!</Grid>
       }
     </Grid.Container>
   );

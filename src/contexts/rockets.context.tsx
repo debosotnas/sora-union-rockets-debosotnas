@@ -2,14 +2,18 @@ import { IRocketContextData, IRocketListItem } from "@/components/types/basic";
 import { createContext, useState } from "react";
 
 const rocketContextData: IRocketContextData = {
+  isLoadingData: false,
   rocketListData: new Map(),
-  isLoadingData: false
+  showEditRocketModal: false,
+  currEditRocketData: null,
 }
 
 export const RocketContext = createContext(rocketContextData);
 
 export function RocketProvider({ children }: { children: any }) {
   const [rockets, setRockets] = useState<Map<number, IRocketListItem>>(new Map());
+  const [showEditRocketModal, setShowEditRocketModal] = useState<boolean>(false);
+  const [currEditRocketData, setCurrEditRocketData] = useState<IRocketListItem | null>(null);
 
   const addOrUpdateRocket = (rocket:IRocketListItem) => {
     setRockets(new Map(rockets.set(rocket.id, rocket)));
@@ -24,7 +28,17 @@ export function RocketProvider({ children }: { children: any }) {
   console.log('>>> rockets: ', rockets);
 
   return (
-    <RocketContext.Provider value={{ isLoadingData: false, rocketListData: rockets, addOrUpdateRocket, removeRocket }}>
+    <RocketContext.Provider
+      value={{ 
+        isLoadingData: false,
+        rocketListData: rockets,
+        showEditRocketModal,
+        currEditRocketData,
+        addOrUpdateRocket,
+        removeRocket,
+        setShowEditRocketModal,
+        setCurrEditRocketData,
+      }}>
       {children}
     </RocketContext.Provider>
   );

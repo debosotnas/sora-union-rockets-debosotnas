@@ -1,14 +1,41 @@
 import { RocketContext } from "@/contexts/rockets.context";
-import { Card, Text } from "@nextui-org/react";
+import { Card, Pagination, Text, Modal, Button } from "@nextui-org/react";
 import { useContext } from "react";
+import EditRocketForm from "../rocket-form/EditRocketForm.component";
 import { IRocketContextData, IRocketListItem } from "../types/basic";
 import RocketList from "./RocketList.component";
+import styles from './RocketListContainer.module.scss';
 
+function getEditRocketModal(
+  { closeHandler,
+    showEditRocketModal,
+    rocketItemData
+  }: {
+    closeHandler: () => void,
+    showEditRocketModal: boolean,
+    rocketItemData: IRocketListItem | null
+  }) {
+
+  return (
+    <Modal
+      closeButton
+      blur
+      preventClose
+      aria-labelledby="modal-title"
+      open={showEditRocketModal}
+      onClose={closeHandler}
+    >
+      <Modal.Body>
+        <EditRocketForm rocketInfo={rocketItemData || {}} />
+      </Modal.Body>
+    </Modal>)
+}
 function RocketListContainer() {
 
   const rocketListContext: IRocketContextData = useContext(RocketContext);
-  // const rocketListData: Map<number, IRocketListItem> = rocketListContext.rocketListData;
-  // console.log('>> rocketListData: ', rocketListData);
+  const closeHandler = () => {
+    rocketListContext.setShowEditRocketModal && rocketListContext.setShowEditRocketModal(false);
+  }
 
   return (
     <Card className="card-wrapper">
@@ -17,7 +44,16 @@ function RocketListContainer() {
       </Card.Header>
       <Card.Body>
         <RocketList rocketListData={rocketListContext.rocketListData} />
+        {getEditRocketModal({
+          closeHandler,
+          showEditRocketModal: rocketListContext.showEditRocketModal,
+          rocketItemData: rocketListContext.currEditRocketData
+        })}
       </Card.Body>
+      <Card.Footer className={styles.paginationBlock}>
+        {/* TODO: Pending implementation */}
+        <Pagination animated={false} color="success" total={2} initialPage={1} />
+      </Card.Footer>
     </Card>
   );
 }

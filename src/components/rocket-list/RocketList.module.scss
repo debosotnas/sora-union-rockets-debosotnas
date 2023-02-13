@@ -1,0 +1,16 @@
+@import '@/styles/abstracts.scss';
+
+.rocketListContainer {
+
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    padding: 0;
+    
+    @include breakpoint('small') {
+        padding: 20px;
+    }
+
+}

@@ -1,7 +1,99 @@
-.rocketCard {
-    // background-color: #d5e3fb;
-    // border: 1px solid #7abcff;
-    // border-radius: 5px;
-    padding: 0 15px;
-    // margin: 0 15px;
+@import '@/styles/abstracts.scss';
+
+$rocket-list-item-height: 150px;
+
+.rocketListItemWrapper {
+    width: 100%;
+    position: relative;
+    padding-left: 20px;
+
+    @include breakpoint('small') {
+      max-width: calc(50% - 10px);
+    }
+
+  .rocketListItem {
+    height: $rocket-list-item-height;
+
+    &>div {
+      padding: 2px;
+    }
+
+    .listItemLabel {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+
+      overflow: hidden;
+
+      &.listLineEllipsis1 {
+        -webkit-line-clamp: 1;
+      }
+
+      &.listLineEllipsis2 {
+        -webkit-line-clamp: 2;
+      }
+
+      &.listLineEllipsis3 {
+        -webkit-line-clamp: 3;
+      }
+
+      b {
+        color: #555;
+      }
+    }
+
+    .rocketCard {
+      padding: 10px 10px 10px 100px;
+      flex-direction: column;
+      overflow: hidden;
+      flex-wrap: nowrap;
+      height: 100%;
+      justify-content: space-around;
+      font-size: .8rem;
+    }
+    
   }
+
+  .rocketCardImageWrapper {
+    $card-img-wrapper-height: ($rocket-list-item-height/3)*2;
+  
+    background-color: white;
+    padding: 7px;
+    position: absolute;
+    left: 0;
+    height: $card-img-wrapper-height;
+    top: $rocket-list-item-height/2 - $card-img-wrapper-height/2;
+    width: 100px;
+    border-radius: 3px;
+    z-index: 1;
+    box-shadow: 0 0 10px #aaa;
+  
+    transition-property: box-shadow;
+    transition-duration: .3s;
+  
+    @include breakpoint('small') {
+      width: 100px;
+    }
+  }  
+
+  &:hover {
+    .rocketListItem{
+      background: linear-gradient(342deg, rgba(234,234,234,1) 0%, rgba(225,242,255,1) 16%, rgba(249,225,255,1) 100%);
+    }
+    .rocketCardImageWrapper {
+      animation-duration: .3s;
+      animation-name: img-mouse-over;
+      animation-iteration-count: 1;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+  }
+
+}
+
+@keyframes img-mouse-over {
+  0% { transform: rotate(0); }
+  20% { transform: rotate(7deg); }
+  40% { transform: rotate(-5deg); }
+  60% { transform: rotate(2deg); }
+  80% { transform: rotate(-1deg); }
+  100% { transform: rotate(0); }
+}

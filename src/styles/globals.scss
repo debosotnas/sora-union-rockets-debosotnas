@@ -1,17 +1,8 @@
-// $spacerBase: 10px;
-
-// @import url('./variables.scss');
+@import './abstracts.scss';
 
 :root {
     // base vars
     --spacer-base: 10px;
-
-    // media breakpoints
-    // --media-size-xs: 650px;
-    // --media-size-sm: 960px;
-    // --media-size-md: 960px;
-    // --media-size-lg: 1280px;
-    // --media-size-xl: 1400px;
 }
 
 .card-wrapper {
