@@ -1,4 +1,4 @@
-import { IRocketContextData, IRocketListItem } from '../types/basic';
+import { IRocketContextData, IRocketListItem } from '../types/common';
 import { Card, Text, Button, Grid } from '@nextui-org/react';
 import styles from './RocketListItem.module.scss';
 import { useContext } from 'react';
@@ -21,9 +21,21 @@ function RocketListItem({ rocketInfo }: { rocketInfo: IRocketListItem }) {
 
   const onCardClickhandler = () => {
     // console.log('>> cardClickHandler - rocketInfo: ', rocketInfo);
-    rocketListContext.setCurrEditRocketData && rocketListContext.setCurrEditRocketData(rocketInfo);
-    rocketListContext.setShowEditRocketModal && rocketListContext.setShowEditRocketModal(true);
+    // rocketListContext.setCurrEditRocketData && rocketListContext.setCurrEditRocketData(rocketInfo);
+    rocketListContext.setShowEditRocketModal && rocketListContext.setShowEditRocketModal(rocketInfo);
   };
+
+    // import ImageListItem from '@mui/material/ImageListItem';
+
+{/* <ImageListItem key={'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62'}>
+          <img
+            src={`https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=164&h=164&fit=crop&auto=format`}
+            srcSet={`https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+            alt={'Coffee'}
+            loading="lazy"
+          />
+        </ImageListItem> */}
+
 
   return (
     <div className={styles.rocketListItemWrapper}>

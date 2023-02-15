@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Grid } from "@nextui-org/react";
-import { IRocketContextData, IRocketListItem } from "../types/basic";
+import { IRocketContextData, IRocketListItem } from "../types/common";
 import styles from './RocketList.module.scss';
 import RocketListItem from "./RocketListItem.component";
 import { RocketContext } from "@/contexts/rockets.context";

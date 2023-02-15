@@ -1,22 +1,26 @@
-import { LegacyRef, ReactElement, useContext, useRef } from "react";
+import { LegacyRef, ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Card, Button, Spacer, Text, Loading } from "@nextui-org/react";
 import { RocketContext } from "@/contexts/rockets.context";
-import { IRocketContextData, IRocketListItem, TypeRocketItemToCreate } from "../types/basic";
-import { httpCreateRocket } from "@/httpApi/httpApi";
+import { IGithubUserDetails, IRocketContextData, IRocketListItem, TRocketItemToCreate } from "../types/common";
+import { getGithubUsersByName, httpCreateRocket } from "@/httpApi/httpApi";
 import { CommonRocketBaseForm, validateFormValues } from "./CommonRocketBaseForm";
 
 function CreateRocketForm(): ReactElement {
   const formRef = useRef<HTMLFormElement>(null);
+  
   const {
     register,
+    setValue,
     handleSubmit,
+    watch,
+    reset,
     formState: { isSubmitting } } = useForm();
 
   const rocketListContext: IRocketContextData = useContext(RocketContext);
-
+    
   const clearFormFields = () => {
-    formRef.current?.reset();
+    reset();
   };
 
   const createOrUpdateRocket = (values: FieldValues) => {
@@ -24,7 +28,7 @@ function CreateRocketForm(): ReactElement {
 
     // TODO: Add Error exception handler
     if (validateFormValues(values)) {
-      const rocketToCreate: TypeRocketItemToCreate = {
+      const rocketToCreate: TRocketItemToCreate = {
         description: values.description,
         // TODO: update data type to an object (according to GH user info)
         // TODO: update with real user info
@@ -49,17 +53,14 @@ function CreateRocketForm(): ReactElement {
           <Text h2 css={{ m: 0, color: '$colors$primary' }}>New Rocket <i>✨🚀✨</i></Text>
         </Card.Header>
         <Card.Body>
-          <CommonRocketBaseForm register={register} />
+          <CommonRocketBaseForm register={register} watch={watch} setValue={setValue} />
         </Card.Body>
         <Card.Footer css={{ justifyContent: 'center' }}>
-
           <Button 
             auto flat 
             color={'secondary'} 
             css={{ maxW: '50px' }}
-            onPress={()=>{
-              clearFormFields();
-            }}
+            onPress={clearFormFields}
           >Clear</Button>
           <Spacer x={1} />
           <Button auto flat type="submit" color={'primary'}>

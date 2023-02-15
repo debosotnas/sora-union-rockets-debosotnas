@@ -1,19 +1,17 @@
 import { RocketContext } from "@/contexts/rockets.context";
 import { Card, Pagination, Text, Modal, Button } from "@nextui-org/react";
 import { useContext } from "react";
-import EditRocketForm from "../rocket-form/EditRocketForm.component";
-import { IRocketContextData, IRocketListItem } from "../types/basic";
+import EditRocketForm from "../rocket-forms/EditRocketForm.component";
+import { IRocketContextData, IRocketListItem } from "../types/common";
 import RocketList from "./RocketList.component";
 import styles from './RocketListContainer.module.scss';
 
 function getEditRocketModal(
   { closeHandler,
-    showEditRocketModal,
-    rocketItemData
+    showEditRocketModal
   }: {
     closeHandler: () => void,
-    showEditRocketModal: boolean,
-    rocketItemData: IRocketListItem | null
+    showEditRocketModal: IRocketListItem | boolean
   }) {
 
   return (
@@ -22,11 +20,11 @@ function getEditRocketModal(
       blur
       preventClose
       aria-labelledby="modal-title"
-      open={showEditRocketModal}
+      open={showEditRocketModal as boolean}
       onClose={closeHandler}
     >
       <Modal.Body>
-        <EditRocketForm rocketInfo={rocketItemData || {}} />
+        <EditRocketForm rocketInfo={(showEditRocketModal as IRocketListItem) || {}} />
       </Modal.Body>
     </Modal>)
 }
@@ -47,7 +45,6 @@ function RocketListContainer() {
         {getEditRocketModal({
           closeHandler,
           showEditRocketModal: rocketListContext.showEditRocketModal,
-          rocketItemData: rocketListContext.currEditRocketData
         })}
       </Card.Body>
       <Card.Footer className={styles.paginationBlock}>

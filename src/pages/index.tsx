@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
 import { Grid } from '@nextui-org/react';
-import CreateRocketForm from '@/components/rocket-form/CreateRocketForm.component';
+import CreateRocketForm from '@/components/rocket-forms/CreateRocketForm.component';
 import RocketListContainer from '@/components/rocket-list/RocketListContainer.component';
 import { RocketProvider } from "@/contexts/rockets.context";
 import styles from '@/styles/Home.module.scss';

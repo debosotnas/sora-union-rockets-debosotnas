@@ -1,19 +1,20 @@
-import { IRocketContextData, IRocketListItem } from "@/components/types/basic";
+import { IGithubUserDetails, IRocketContextData, IRocketListItem } from "@/components/types/common";
 import { createContext, useState } from "react";
 
 const rocketContextData: IRocketContextData = {
   isLoadingData: false,
   rocketListData: new Map(),
   showEditRocketModal: false,
-  currEditRocketData: null,
+  githubSuggestions: [],
 }
 
 export const RocketContext = createContext(rocketContextData);
 
 export function RocketProvider({ children }: { children: any }) {
   const [rockets, setRockets] = useState<Map<number, IRocketListItem>>(new Map());
-  const [showEditRocketModal, setShowEditRocketModal] = useState<boolean>(false);
+  const [showEditRocketModal, setShowEditRocketModal] = useState<IRocketListItem | boolean>(false);
   const [currEditRocketData, setCurrEditRocketData] = useState<IRocketListItem | null>(null);
+  const [githubSuggestions, setGithubSuggestions] = useState<Array<IGithubUserDetails>>([]);
 
   const addOrUpdateRocket = (rocket:IRocketListItem) => {
     setRockets(new Map(rockets.set(rocket.id, rocket)));
@@ -33,11 +34,13 @@ export function RocketProvider({ children }: { children: any }) {
         isLoadingData: false,
         rocketListData: rockets,
         showEditRocketModal,
-        currEditRocketData,
-        addOrUpdateRocket,
-        removeRocket,
-        setShowEditRocketModal,
-        setCurrEditRocketData,
+        // currEditRocketData,
+        githubSuggestions,
+        addOrUpdateRocket, // create / edit
+        removeRocket, // not used
+        setShowEditRocketModal, // open-hide modal (rocketListItem/Container - Edit)
+        // setCurrEditRocketData,
+        setGithubSuggestions,
       }}>
       {children}
     </RocketContext.Provider>
