@@ -2,23 +2,105 @@
 
 $rocket-list-item-height: 150px;
 
-.rocketListItemWrapper {
-    width: 100%;
+.rocketListItemCmp {
+  @include breakpoint('small') {
+    max-width: calc(50% - 10px);
+  }  
+
+  .rocketListItemContent {
     position: relative;
     padding-left: 20px;
 
-    @include breakpoint('small') {
-      max-width: calc(50% - 10px);
+    .rocketListDeleteBtn {
+      filter: saturate(0);
+      opacity: .5;
     }
+
+    &:hover {
+      .rocketListDeleteBtn {
+        filter: saturate(1);
+        opacity: .7;
+      }
+    }
+  }
+
+  .rocketListDeleteBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+
+    & > button {
+      font-size: .7rem;
+      border-radius: 0;
+      border-top-right-radius: 14px;
+      border-bottom-left-radius: 14px;
+    }
+  }
+
+  &:hover {
+    .rocketListItem{
+      background: linear-gradient(342deg, rgba(234,234,234,1) 0%, rgba(225,242,255,1) 16%, rgba(249,225,255,1) 100%);
+    }
+    .rocketCardImageWrapper {
+      animation-duration: .3s;
+      animation-name: img-mouse-over;
+      animation-iteration-count: 1;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+  }
+
+  .rocketCardImageWrapper {
+    $card-img-wrapper-height: ($rocket-list-item-height/3)*2;
+  
+    cursor: pointer;
+    border: none;
+    background-color: #fff;
+    padding: 7px;
+    position: absolute;
+    left: 0;
+    height: $card-img-wrapper-height;
+    top: $rocket-list-item-height/2 - $card-img-wrapper-height/2;
+    width: 100px;
+    border-radius: 3px;
+    z-index: 1;
+    box-shadow: 0 0 10px #aaa;
+    filter: saturate(0);
+  
+    transition-property: box-shadow filter;
+    transition-duration: .3s;
+
+    @include breakpoint('small') {
+      width: 100px;
+    }
+
+    &:hover {
+      filter: saturate(1);
+      animation-duration: .3s;
+      animation-name: img-mouse-over-img;
+      animation-iteration-count: 1;
+    }
+
+    .rocketCardImage {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }  
+  }
 
   .rocketListItem {
     height: $rocket-list-item-height;
+
+    button {
+      height: 100%;
+    }
 
     &>div {
       padding: 2px;
     }
 
     .listItemLabel {
+      font-size: .9rem;
       display: -webkit-box;
       -webkit-box-orient: vertical;
 
@@ -42,51 +124,27 @@ $rocket-list-item-height: 150px;
     }
 
     .rocketCard {
+      display: flex;
+      justify-content: space-between;
+
       padding: 10px 10px 10px 100px;
       flex-direction: column;
       overflow: hidden;
       flex-wrap: nowrap;
       height: 100%;
-      justify-content: space-around;
       font-size: .8rem;
+
+      .githubUserLogin {
+        display: flex;
+        align-items: center;
+
+        img {
+          margin-right: 5px;
+        }
+      }
     }
     
-  }
-
-  .rocketCardImageWrapper {
-    $card-img-wrapper-height: ($rocket-list-item-height/3)*2;
-  
-    background-color: white;
-    padding: 7px;
-    position: absolute;
-    left: 0;
-    height: $card-img-wrapper-height;
-    top: $rocket-list-item-height/2 - $card-img-wrapper-height/2;
-    width: 100px;
-    border-radius: 3px;
-    z-index: 1;
-    box-shadow: 0 0 10px #aaa;
-  
-    transition-property: box-shadow;
-    transition-duration: .3s;
-  
-    @include breakpoint('small') {
-      width: 100px;
-    }
   }  
-
-  &:hover {
-    .rocketListItem{
-      background: linear-gradient(342deg, rgba(234,234,234,1) 0%, rgba(225,242,255,1) 16%, rgba(249,225,255,1) 100%);
-    }
-    .rocketCardImageWrapper {
-      animation-duration: .3s;
-      animation-name: img-mouse-over;
-      animation-iteration-count: 1;
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    }
-  }
-
 }
 
 @keyframes img-mouse-over {
@@ -96,4 +154,13 @@ $rocket-list-item-height: 150px;
   60% { transform: rotate(2deg); }
   80% { transform: rotate(-1deg); }
   100% { transform: rotate(0); }
+}
+
+@keyframes img-mouse-over-img {
+  0% { transform: scale(1); }
+  20% { transform: scale(1.1); }
+  40% { transform: scale(0.9); }
+  60% { transform: scale(1.05); }
+  80% { transform: scale(.97); }
+  100% { transform: scale(1); }
 }

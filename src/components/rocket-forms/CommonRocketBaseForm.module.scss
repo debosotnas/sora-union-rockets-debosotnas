@@ -2,3 +2,16 @@
     width: 50px;
     padding-right: 10px;
 }
+
+.formTextField, .formTextArea {
+    width: 100%;
+    margin-top: 15px;
+
+    > div {
+        width: 100%;
+    }
+}
+
+.formTextArea {
+    margin-bottom: 15px;
+}

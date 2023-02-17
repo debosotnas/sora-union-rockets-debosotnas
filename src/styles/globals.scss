@@ -1,10 +1,36 @@
 @import './abstracts.scss';
 
 :root {
-    // base vars
-    --spacer-base: 10px;
+  // base vars
+  --spacer-base: 10px;
+}
+
+body, html {
+  background-image: url('/static/images/stars-bg.svg');
+  background-repeat: repeat;
 }
 
 .card-wrapper {
-    padding: var(--spacer-base);
+  padding: var(--spacer-base);
+}
+
+.paper-container-create, .paper-container-list {
+  border-radius: 14px;
+  background-color: #FFF;
+  padding: 20px 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 570px;
+
+  @include breakpoint('small') {
+    min-width: 400px;
+  }
+}
+.paper-container-create {
+  justify-content: space-between;
+}
+
+.MuiCardActionArea-focusHighlight {
+  display: none;
 }

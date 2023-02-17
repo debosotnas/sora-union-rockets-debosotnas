@@ -1,13 +1,13 @@
-import { LegacyRef, ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { ReactElement, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Card, Button, Spacer, Text, Loading } from "@nextui-org/react";
 import { RocketContext } from "@/contexts/rockets.context";
-import { IGithubUserDetails, IRocketContextData, IRocketListItem, TRocketItemToCreate } from "../types/common";
+import { IGithubUserDetails, IRocketContextData, IRocketListItem, TRocketItemToCreate } from "../../types/common";
 import { getGithubUsersByName, httpCreateRocket } from "@/httpApi/httpApi";
 import { CommonRocketBaseForm, validateFormValues } from "./CommonRocketBaseForm";
+import { Button, CircularProgress, Grid, Paper, Typography } from "@mui/material";
+import styles from './CreateEditRocketForm.module.scss';
 
 function CreateRocketForm(): ReactElement {
-  const formRef = useRef<HTMLFormElement>(null);
   
   const {
     register,
@@ -47,27 +47,32 @@ function CreateRocketForm(): ReactElement {
   }
 
   return (
-    <Card className="card-wrapper">
-      <form ref={formRef} onSubmit={handleSubmit(createOrUpdateRocket)}>
-        <Card.Header>
-          <Text h2 css={{ m: 0, color: '$colors$primary' }}>New Rocket <i>✨🚀✨</i></Text>
-        </Card.Header>
-        <Card.Body>
-          <CommonRocketBaseForm register={register} watch={watch} setValue={setValue} />
-        </Card.Body>
-        <Card.Footer css={{ justifyContent: 'center' }}>
-          <Button 
-            auto flat 
-            color={'secondary'} 
-            css={{ maxW: '50px' }}
-            onPress={clearFormFields}
-          >Clear</Button>
-          <Spacer x={1} />
-          <Button auto flat type="submit" color={'primary'}>
-            {!isSubmitting ? `Add Rocket` : <Loading size={'sm'} />}</Button>
-        </Card.Footer>
-      </form>
-    </Card>
+    <Grid container spacing={16}>
+      <Grid sx={{width: 1}} item>
+        <Grid container justifyContent={{xs: 'center', md: 'left'}} spacing={16}>
+          <Grid sx={{width: 1, maxWidth: 'md'}} item>
+            <form onSubmit={handleSubmit(createOrUpdateRocket)}>
+              <Paper className='paper-container-create' elevation={24}>
+                <Typography component="h3" variant="h4" sx={{textAlign: 'center'}} gutterBottom>
+                  New Rocket <i>✨🚀✨</i>
+                </Typography>
+                <Paper className={styles.formControlsContainer} elevation={0}>
+                  <CommonRocketBaseForm register={register} watch={watch} setValue={setValue} />
+                </Paper>
+                <Paper className={styles.formCTAs} elevation={0}>
+                  <Button variant="outlined" color="secondary" onClick={clearFormFields}>
+                    Clear
+                  </Button>
+                  <Button variant="outlined" color="primary" type={'submit'}>
+                  {!isSubmitting ? `Add Rocket` : <CircularProgress />}
+                  </Button>
+                </Paper>
+              </Paper>
+            </form>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 

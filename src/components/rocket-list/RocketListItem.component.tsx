@@ -1,74 +1,82 @@
-import { IRocketContextData, IRocketListItem } from '../types/common';
-import { Card, Text, Button, Grid } from '@nextui-org/react';
+import { IRocketContextData, IRocketListItem } from '../../types/common';
+import Image from 'next/image';
 import styles from './RocketListItem.module.scss';
 import { useContext } from 'react';
 import { RocketContext } from '@/contexts/rockets.context';
+import { Card, CardActionArea, CardContent, Grid, Box, IconButton, Typography, Avatar } from '@mui/material';
+import { IGlobalContextData, PromptTypes } from '@/types/global';
+import { GlobalContext } from '@/contexts/globals.context';
 
-// example img: 
-// https://avatars.githubusercontent.com/u/57215976?v=4
-// from NextUI
-// https://nextui.org/images/card-example-6.jpeg
-
-function ListItemLabel(k: string, v: string, className: string = '') {
-  return <Grid>
-    <Text className={className} as={'span'} ><b>{k}</b>: {v}</Text>
-  </Grid>;
+function ListItemLabel(k: (string), v: string, className: string = '') {
+  return <Typography className={className}>{k ? <span><b>{k}</b> :</span> : '' }{v}</Typography>;
 }
 
 function RocketListItem({ rocketInfo }: { rocketInfo: IRocketListItem }) {
   const rocketListContext: IRocketContextData = useContext(RocketContext);
+  const globalContext: IGlobalContextData = useContext(GlobalContext);
+
   const itemLableClass = [styles.listItemLabel, styles.listLineEllipsis1].join(' ');
 
   const onCardClickhandler = () => {
-    // console.log('>> cardClickHandler - rocketInfo: ', rocketInfo);
-    // rocketListContext.setCurrEditRocketData && rocketListContext.setCurrEditRocketData(rocketInfo);
     rocketListContext.setShowEditRocketModal && rocketListContext.setShowEditRocketModal(rocketInfo);
   };
 
-    // import ImageListItem from '@mui/material/ImageListItem';
+  const onDeleteClickHandler = () => {
+    globalContext.showPrompt && globalContext.showPrompt(
+      {
+        open: true,
+        title: 'Delete card',
+        msg: 'Delete selected card?',
+        type: PromptTypes.OKCANCEL,
+        cbConfirm: () => {
+          rocketListContext.removeRocket && rocketListContext.removeRocket(rocketInfo);
+        }
+      }
+    );
+  }
 
-{/* <ImageListItem key={'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62'}>
-          <img
-            src={`https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=164&h=164&fit=crop&auto=format`}
-            srcSet={`https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            alt={'Coffee'}
-            loading="lazy"
-          />
-        </ImageListItem> */}
-
+  const onShowGithubUserInfo = (ghid: string) => {
+    console.log('>> ghid: ', ghid);
+  }
 
   return (
-    <div className={styles.rocketListItemWrapper}>
-      <div className={styles.rocketCardImageWrapper}>
-        <Card.Image
-          className={styles.rocketCardImage}
-          src="https://avatars.githubusercontent.com/u/57215976?v=4"
-          objectFit="cover"
-          width="100%"
-          height="100%"
-          alt=""
-        />
-      </div>
-      <Card 
-        isHoverable 
-        isPressable
-        variant="flat"
-        onPress={() => {
-          onCardClickhandler()
-        }}
-        className={styles.rocketListItem}>
-        <Card.Body as={'div'}>
-          <Grid.Container className={styles.rocketCard} as={'div'} key={rocketInfo.id}>
-            {/* { ListItemLabel('ID', rocketInfo.id.toString(), itemLableClass) } */}
-            {ListItemLabel('Title', rocketInfo.title, itemLableClass)}
-            {ListItemLabel('Name', rocketInfo.name, itemLableClass)}
-            {ListItemLabel('Description', rocketInfo.description, [styles.listItemLabel, styles.listLineEllipsis2].join(' '))}
-            {ListItemLabel('Github', rocketInfo.githubUserInfo, [styles.listItemLabel, styles.listLineEllipsis2].join(' '))}
-          </Grid.Container>
+    <Grid container sx={{width: .5}} className={styles.rocketListItemCmp}>
+      <Grid item sx={{width: 1}} className={styles.rocketListItemContent}>
+        <div className={styles.rocketListDeleteBtn}>
+          <IconButton color='primary' aria-label='delete rocket' onClick={()=>{
+            onDeleteClickHandler();
+          }}>❌</IconButton>
+        </div>
 
-        </Card.Body>
-      </Card>
-    </div>
+        <button onClick={() => onShowGithubUserInfo(rocketInfo.githubUserInfo)} className={styles.rocketCardImageWrapper}>
+          <Avatar
+            src="https://avatars.githubusercontent.com/u/57215976?v=4"
+            className={styles.rocketCardImage}
+            variant="square">
+          </Avatar>          
+        </button>
+
+        <Card
+          className={styles.rocketListItem}
+          elevation={3}
+          sx={{ width: 1, ':hover': { boxShadow: 14} }}
+        >
+          <CardActionArea onClick={onCardClickhandler}>
+            <CardContent className={styles.rocketCard}>
+              <Box>
+                {ListItemLabel('Title', rocketInfo.title, itemLableClass)}
+                {ListItemLabel('Name', rocketInfo.name, itemLableClass)}
+                {ListItemLabel('Description', rocketInfo.description, [styles.listItemLabel, styles.listLineEllipsis2].join(' '))}
+              </Box>
+              <Box className={styles.githubUserLogin}>
+                <Image src="/static/images/github-ico.svg" alt="github" width="18" height="18" />
+                {ListItemLabel('', rocketInfo.githubUserInfo, [styles.listItemLabel, styles.listLineEllipsis2].join(' '))}
+              </Box>
+            </CardContent>
+          </CardActionArea>
+        </Card>        
+      </Grid>
+    </Grid>
   )
 }
 

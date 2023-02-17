@@ -1,10 +1,11 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import { Grid } from '@nextui-org/react';
+// import { Grid } from '@nextui-org/react';
 import CreateRocketForm from '@/components/rocket-forms/CreateRocketForm.component';
 import RocketListContainer from '@/components/rocket-list/RocketListContainer.component';
 import { RocketProvider } from "@/contexts/rockets.context";
-import styles from '@/styles/Home.module.scss';
+import { Grid } from '@mui/material';
+import { GlobalsProvider } from '@/contexts/globals.context';
 
 export default function Home(): ReactElement {
 
@@ -17,16 +18,18 @@ export default function Home(): ReactElement {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <RocketProvider>
-          <Grid.Container className={styles.gridContainer} justify="center" wrap='wrap-reverse'>
-              <Grid className={styles.leftGridContainer} xs={10} sm={6}>
-                  <RocketListContainer />
+        <GlobalsProvider>
+          <RocketProvider>
+            <Grid container spacing={2} wrap='wrap-reverse' sx={{ mt: 2 }}>
+              <Grid item xs={12} md={6}>
+                <RocketListContainer />
               </Grid>
-              <Grid className={styles.rightGridContainer} xs={10} sm={4}>
-                  <CreateRocketForm />
+              <Grid item xs={12} md={6}>
+                <CreateRocketForm />
               </Grid>
-          </Grid.Container>
-        </RocketProvider>
+            </Grid>
+          </RocketProvider>
+        </GlobalsProvider>
       </main>
     </>
   )

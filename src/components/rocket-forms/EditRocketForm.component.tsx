@@ -1,10 +1,11 @@
 import { ReactElement, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Card, Button, Spacer, Text, Loading } from "@nextui-org/react";
 import { RocketContext } from "@/contexts/rockets.context";
-import { IRocketContextData, IRocketListItem } from "../types/common";
+import { IRocketContextData, IRocketListItem } from "../../types/common";
 import { httpUpdateRocket } from "@/httpApi/httpApi";
 import { CommonRocketBaseForm, validateFormValues } from "./CommonRocketBaseForm";
+import { Button, CircularProgress, Paper, Typography } from "@mui/material";
+import styles from './CreateEditRocketForm.module.scss';
 
 function EditRocketForm(
   { rocketInfo: formValues }: { rocketInfo?: Partial<IRocketListItem> }
@@ -30,7 +31,7 @@ function EditRocketForm(
     // TODO: Add Error exception handler
     if (formValues && formValues.id) {
 
-      if(!validateFormValues(formValues)) {
+      if (!validateFormValues(formValues)) {
         //TODO: Exception errors on invalid formValues
         return;
       }
@@ -55,28 +56,29 @@ function EditRocketForm(
   }
 
   return (
-    <Card className="card-wrapper">
-      <form onSubmit={handleSubmit(updateRocket)}>
-        <Card.Header>
-          <Text h2 css={{ m: 0, color: '$colors$primary' }}>Edit Card <i>✨🚀✨</i></Text>
-        </Card.Header>
-        <Card.Body>
-            <CommonRocketBaseForm
-              register={register}
-              watch={watch}
-              setValue={setValue}
-              formValues={formValues}
-              showAsEditMode={true} />
-        </Card.Body>
-        <Card.Footer css={{ justifyContent: 'center' }}>
-          <Button auto flat color={'secondary'} onClick={() => {closeEditHandler}} 
-            css={{ maxW: '50px' }}>Cancel</Button>
-          <Spacer x={1} />
-          <Button auto flat type="submit" color={'primary'}>
-            {!isSubmitting ? `Save` : <Loading size={'sm'} />}</Button>
-        </Card.Footer>
-      </form>
-    </Card>
+        <form onSubmit={handleSubmit(updateRocket)}>
+          <Paper className={styles.formContainer} elevation={0}>
+            <Typography component="h3" variant="h4" gutterBottom>
+              Edit Card <i>✨🚀✨</i>
+            </Typography>
+            <Paper className={styles.formControlsContainer} elevation={0}>
+              <CommonRocketBaseForm
+                register={register}
+                watch={watch}
+                setValue={setValue}
+                formValues={formValues}
+                showAsEditMode={true} />
+            </Paper>
+            <Paper className={styles.formCTAs} elevation={0}>
+              <Button variant="outlined" color="secondary" onClick={closeEditHandler}>
+                Cancel
+              </Button>
+              <Button variant="outlined" color="primary" type={'submit'}>
+                {!isSubmitting ? `Save` : <CircularProgress />}
+              </Button>
+            </Paper>
+          </Paper>
+        </form>
   );
 }
 

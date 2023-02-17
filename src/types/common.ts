@@ -34,12 +34,10 @@ export interface IRocketContextData {
     rocketListData: Map<number, IRocketListItem>;
     isLoadingData: boolean;
     showEditRocketModal: IRocketListItem | boolean;
-    // currEditRocketData: IRocketListItem | null;
     githubSuggestions: Array<IGithubUserDetails>
     addOrUpdateRocket?(rocket:IRocketListItem): void;
     removeRocket?(rocket:IRocketListItem): void;
     setShowEditRocketModal?(val:IRocketListItem | boolean): void;
-    // setCurrEditRocketData?(val:IRocketListItem | null): void;
     setGithubSuggestions?(val:Array<IGithubUserDetails>): void;
 }
 

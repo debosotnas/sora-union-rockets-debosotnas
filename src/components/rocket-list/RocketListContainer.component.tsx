@@ -1,10 +1,9 @@
 import { RocketContext } from "@/contexts/rockets.context";
-import { Card, Pagination, Text, Modal, Button } from "@nextui-org/react";
 import { useContext } from "react";
 import EditRocketForm from "../rocket-forms/EditRocketForm.component";
-import { IRocketContextData, IRocketListItem } from "../types/common";
+import { IRocketContextData, IRocketListItem } from "../../types/common";
 import RocketList from "./RocketList.component";
-import styles from './RocketListContainer.module.scss';
+import { Dialog, DialogContent, Grid, Paper, Typography } from "@mui/material";
 
 function getEditRocketModal(
   { closeHandler,
@@ -14,19 +13,17 @@ function getEditRocketModal(
     showEditRocketModal: IRocketListItem | boolean
   }) {
 
+  const showDialog: boolean = typeof showEditRocketModal === 'boolean' ? showEditRocketModal : true;
   return (
-    <Modal
-      closeButton
-      blur
-      preventClose
-      aria-labelledby="modal-title"
-      open={showEditRocketModal as boolean}
+    <Dialog
+      open={showDialog}
       onClose={closeHandler}
     >
-      <Modal.Body>
+      <DialogContent>
         <EditRocketForm rocketInfo={(showEditRocketModal as IRocketListItem) || {}} />
-      </Modal.Body>
-    </Modal>)
+      </DialogContent>
+    </Dialog>
+  );
 }
 function RocketListContainer() {
 
@@ -36,22 +33,22 @@ function RocketListContainer() {
   }
 
   return (
-    <Card className="card-wrapper">
-      <Card.Header>
-        <Text h2 css={{ m: 0, color: '$colors$primary' }}><i>🚀</i> List of Rockets</Text>
-      </Card.Header>
-      <Card.Body>
-        <RocketList rocketListData={rocketListContext.rocketListData} />
-        {getEditRocketModal({
-          closeHandler,
-          showEditRocketModal: rocketListContext.showEditRocketModal,
-        })}
-      </Card.Body>
-      <Card.Footer className={styles.paginationBlock}>
-        {/* TODO: Pending implementation */}
-        <Pagination animated={false} color="success" total={2} initialPage={1} />
-      </Card.Footer>
-    </Card>
+    <Grid container spacing={16}>
+      <Grid sx={{width: 1}} item>
+        <Grid container justifyContent={{ xs: 'center', md: 'right' }} spacing={16}>
+          <Grid sx={{width: 1, maxWidth: 'md'}} item>
+            <Paper className='paper-container-list' elevation={24}>
+              <Typography variant="h4" component={"h3"} sx={{textAlign: 'center'}}><i>🚀</i> List of Rockets</Typography>
+              <RocketList rocketListData={rocketListContext.rocketListData} />
+              {getEditRocketModal({
+                closeHandler,
+                showEditRocketModal: rocketListContext.showEditRocketModal,
+              })}
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 

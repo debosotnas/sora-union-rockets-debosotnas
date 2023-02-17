@@ -1,9 +1,8 @@
-import { IRocketListItem, TRocketItemToCreate } from "@/components/types/common";
+import { IRocketListItem, TRocketItemToCreate } from "@/types/common";
 
 const GITHUB_BASE_PATH = 'https://api.github.com';
 const getGithubSearchURL = (name: string, page: number = 1) => 
   `${GITHUB_BASE_PATH}/search/users?q=${encodeURIComponent(name)}+in:login&page=${page}&per_page=10`;
-  // `${GITHUB_BASE_PATH}/search/users?q=${encodeURIComponent(name)}+in:name&page=${page}&per_page=10`;
 
 // TODO: Add Error exception handler
 export function httpCreateRocket(rocket: TRocketItemToCreate) {

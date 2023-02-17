@@ -1,5 +1,5 @@
-import { IGithubUserDetails, IRocketContextData, IRocketListItem } from "@/components/types/common";
-import { createContext, useState } from "react";
+import { IGithubUserDetails, IRocketContextData, IRocketListItem } from "@/types/common";
+import { createContext, PropsWithChildren, useState } from "react";
 
 const rocketContextData: IRocketContextData = {
   isLoadingData: false,
@@ -10,10 +10,9 @@ const rocketContextData: IRocketContextData = {
 
 export const RocketContext = createContext(rocketContextData);
 
-export function RocketProvider({ children }: { children: any }) {
+export function RocketProvider({ children }: PropsWithChildren) {
   const [rockets, setRockets] = useState<Map<number, IRocketListItem>>(new Map());
   const [showEditRocketModal, setShowEditRocketModal] = useState<IRocketListItem | boolean>(false);
-  const [currEditRocketData, setCurrEditRocketData] = useState<IRocketListItem | null>(null);
   const [githubSuggestions, setGithubSuggestions] = useState<Array<IGithubUserDetails>>([]);
 
   const addOrUpdateRocket = (rocket:IRocketListItem) => {
@@ -26,20 +25,16 @@ export function RocketProvider({ children }: { children: any }) {
     setRockets(mapToUpdate);
   };
 
-  console.log('>>> rockets: ', rockets);
-
   return (
     <RocketContext.Provider
       value={{ 
         isLoadingData: false,
         rocketListData: rockets,
         showEditRocketModal,
-        // currEditRocketData,
         githubSuggestions,
         addOrUpdateRocket, // create / edit
-        removeRocket, // not used
+        removeRocket,
         setShowEditRocketModal, // open-hide modal (rocketListItem/Container - Edit)
-        // setCurrEditRocketData,
         setGithubSuggestions,
       }}>
       {children}
