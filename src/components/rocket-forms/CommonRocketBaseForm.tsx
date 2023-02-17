@@ -18,6 +18,7 @@ function validateFormValues(values: FieldValues, ctx: IRocketContextData, uap: U
   return values.title && 
             values.name && 
             values.description && 
+            values.githubUserInfo === currEditGithubUser?.login &&
             (currEditGithubUser ? currEditGithubUser : false);
 }
 

@@ -39,7 +39,9 @@ function RocketListContainer() {
           <Grid sx={{width: 1, maxWidth: 'md'}} item>
             <Paper className='paper-container-list' elevation={24}>
               <Typography variant="h4" component={"h3"} sx={{textAlign: 'center'}}><b>🚀</b> List of Rockets</Typography>
-              { rocketListContext.rocketListData.size > 0 && <Typography variant="h6" component={"p"} sx={{textAlign: 'center', fontSize: '.9rem'}}>[Click on cards to edit / Click on avatars to see more Github info]</Typography> }
+              { rocketListContext.rocketListData.size > 0 && (
+                <Typography variant="h6" component={"p"} sx={{display: { md: 'none' }, color: 'purple', textAlign: 'center', fontSize: '.9rem', mb: 2}}>[Click on cards to edit / Click on avatars to see more Github info]</Typography>
+              ) }
               <RocketList rocketListData={rocketListContext.rocketListData} />
               {getEditRocketModal({
                 closeHandler,

@@ -3,8 +3,10 @@
 $rocket-list-item-height: 150px;
 
 .rocketListItemCmp {
-  @include breakpoint('small') {
-    max-width: calc(50% - 10px);
+  width: 100%;
+
+  @include breakpoint('medium') {
+    max-width: calc(70% - 10px);
   }  
 
   .rocketListItemContent {
@@ -65,13 +67,15 @@ $rocket-list-item-height: 150px;
     border-radius: 3px;
     z-index: 1;
     box-shadow: 0 0 10px #aaa;
-    filter: saturate(0);
-  
+
     transition-property: box-shadow filter;
     transition-duration: .3s;
 
     @include breakpoint('small') {
       width: 100px;
+    }
+    @include breakpoint('medium') {
+      filter: saturate(0);
     }
 
     &:hover {
