@@ -38,7 +38,8 @@ function RocketListContainer() {
         <Grid container justifyContent={{ xs: 'center', md: 'right' }} spacing={16}>
           <Grid sx={{width: 1, maxWidth: 'md'}} item>
             <Paper className='paper-container-list' elevation={24}>
-              <Typography variant="h4" component={"h3"} sx={{textAlign: 'center'}}><i>🚀</i> List of Rockets</Typography>
+              <Typography variant="h4" component={"h3"} sx={{textAlign: 'center'}}><b>🚀</b> List of Rockets</Typography>
+              { rocketListContext.rocketListData.size > 0 && <Typography variant="h6" component={"p"} sx={{textAlign: 'center', fontSize: '.9rem'}}>[Click on cards to edit / Click on avatars to see more Github info]</Typography> }
               <RocketList rocketListData={rocketListContext.rocketListData} />
               {getEditRocketModal({
                 closeHandler,

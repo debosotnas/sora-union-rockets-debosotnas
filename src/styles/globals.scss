@@ -5,9 +5,20 @@
   --spacer-base: 10px;
 }
 
-body, html {
+html {
+  background-color: #0d314e;
   background-image: url('/static/images/stars-bg.svg');
   background-repeat: repeat;
+}
+
+body {
+  background-color: #0d314e;
+  background-position: center -10px;
+  background-image: url('/static/images/stars-bg.svg');
+  background-repeat: repeat;
+  @include breakpoint('small') {
+    background-position: unset;
+  }
 }
 
 .card-wrapper {
@@ -33,4 +44,8 @@ body, html {
 
 .MuiCardActionArea-focusHighlight {
   display: none;
+}
+
+.capitalize-text b {
+  text-transform: capitalize;
 }

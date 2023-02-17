@@ -1,8 +1,8 @@
 import { ReactElement, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { RocketContext } from "@/contexts/rockets.context";
-import { IGithubUserDetails, IRocketContextData, IRocketListItem, TRocketItemToCreate } from "../../types/common";
-import { getGithubUsersByName, httpCreateRocket } from "@/httpApi/httpApi";
+import { IGithubUserDetails, IRocketContextData, IRocketListItem, TRocketItemToCreate, UserActionProcess } from "../../types/common";
+import { httpCreateRocket } from "@/httpApi/httpApi";
 import { CommonRocketBaseForm, validateFormValues } from "./CommonRocketBaseForm";
 import { Button, CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import styles from './CreateEditRocketForm.module.scss';
@@ -26,13 +26,15 @@ function CreateRocketForm(): ReactElement {
   const createOrUpdateRocket = (values: FieldValues) => {
     values.preventDefault && values.preventDefault();
 
+    const currAddUser: IGithubUserDetails = validateFormValues(values, rocketListContext, UserActionProcess.ADD)
     // TODO: Add Error exception handler
-    if (validateFormValues(values)) {
+    if (currAddUser) {
       const rocketToCreate: TRocketItemToCreate = {
         description: values.description,
         // TODO: update data type to an object (according to GH user info)
         // TODO: update with real user info
         githubUserInfo: values.githubUserInfo,
+        githubUserData: currAddUser,
         name: values.name,
         title: values.title,
         dtcreation: new Date()
@@ -41,6 +43,9 @@ function CreateRocketForm(): ReactElement {
       const createdRocket: IRocketListItem = httpCreateRocket(rocketToCreate);
       if (rocketListContext.addOrUpdateRocket) {
         rocketListContext.addOrUpdateRocket(createdRocket);
+        rocketListContext.setCurrGithubUserSelected && rocketListContext.setCurrGithubUserSelected(
+            new Map(rocketListContext.currGithubUserSelected.set(UserActionProcess.ADD, null))
+          );
         clearFormFields();
       }
     }
@@ -54,7 +59,7 @@ function CreateRocketForm(): ReactElement {
             <form onSubmit={handleSubmit(createOrUpdateRocket)}>
               <Paper className='paper-container-create' elevation={24}>
                 <Typography component="h3" variant="h4" sx={{textAlign: 'center'}} gutterBottom>
-                  New Rocket <i>✨🚀✨</i>
+                  New Rocket <b>✨🚀✨</b>
                 </Typography>
                 <Paper className={styles.formControlsContainer} elevation={0}>
                   <CommonRocketBaseForm register={register} watch={watch} setValue={setValue} />

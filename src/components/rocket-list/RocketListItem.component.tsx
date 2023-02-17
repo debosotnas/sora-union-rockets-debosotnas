@@ -1,4 +1,4 @@
-import { IRocketContextData, IRocketListItem } from '../../types/common';
+import { IRocketContextData, IRocketListItem, UserActionProcess } from '../../types/common';
 import Image from 'next/image';
 import styles from './RocketListItem.module.scss';
 import { useContext } from 'react';
@@ -6,6 +6,7 @@ import { RocketContext } from '@/contexts/rockets.context';
 import { Card, CardActionArea, CardContent, Grid, Box, IconButton, Typography, Avatar } from '@mui/material';
 import { IGlobalContextData, PromptTypes } from '@/types/global';
 import { GlobalContext } from '@/contexts/globals.context';
+import UserInfo from '../globals/UserInfo.component';
 
 function ListItemLabel(k: (string), v: string, className: string = '') {
   return <Typography className={className}>{k ? <span><b>{k}</b> :</span> : '' }{v}</Typography>;
@@ -18,7 +19,14 @@ function RocketListItem({ rocketInfo }: { rocketInfo: IRocketListItem }) {
   const itemLableClass = [styles.listItemLabel, styles.listLineEllipsis1].join(' ');
 
   const onCardClickhandler = () => {
-    rocketListContext.setShowEditRocketModal && rocketListContext.setShowEditRocketModal(rocketInfo);
+    rocketListContext.setCurrGithubUserSelected &&
+      rocketListContext.setCurrGithubUserSelected(new Map(
+          rocketListContext.currGithubUserSelected
+            .set(UserActionProcess.EDIT, rocketInfo.githubUserData)
+      ));
+
+    rocketListContext.setShowEditRocketModal 
+      && rocketListContext.setShowEditRocketModal(rocketInfo);
   };
 
   const onDeleteClickHandler = () => {
@@ -35,8 +43,15 @@ function RocketListItem({ rocketInfo }: { rocketInfo: IRocketListItem }) {
     );
   }
 
-  const onShowGithubUserInfo = (ghid: string) => {
-    console.log('>> ghid: ', ghid);
+  const onShowGithubUserInfo = (ghUsername: string) => {
+    globalContext.showPrompt && globalContext.showPrompt(
+      {
+        open: true,
+        title: '',
+        msg: <UserInfo githubUser={ghUsername} />,
+        type: PromptTypes.INFO
+      }
+    );
   }
 
   return (
@@ -50,10 +65,11 @@ function RocketListItem({ rocketInfo }: { rocketInfo: IRocketListItem }) {
 
         <button onClick={() => onShowGithubUserInfo(rocketInfo.githubUserInfo)} className={styles.rocketCardImageWrapper}>
           <Avatar
-            src="https://avatars.githubusercontent.com/u/57215976?v=4"
+            // src="https://avatars.githubusercontent.com/u/57215976?v=4"
+            src={rocketInfo.githubUserData.avatar_url}
             className={styles.rocketCardImage}
             variant="square">
-          </Avatar>          
+          </Avatar>
         </button>
 
         <Card

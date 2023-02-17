@@ -3,7 +3,7 @@ import { getGithubUsersByNameMemo } from "@/httpApi/httpApi";
 import { Autocomplete, debounce, TextField } from "@mui/material";
 import { FormEvent, RefObject, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FieldValues, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { IGithubUserDetails, IRocketContextData, IRocketListItem } from "../../types/common";
+import { AddEditGithubUserProcess, IGithubUserDetails, IRocketContextData, IRocketListItem, UserActionProcess } from "../../types/common";
 import styles from './CommonRocketBaseForm.module.scss';
 
 const cssInput = ({
@@ -11,8 +11,14 @@ const cssInput = ({
   mt: 5
 });
 
-function validateFormValues(values: FieldValues) {
-  return true;
+function validateFormValues(values: FieldValues, ctx: IRocketContextData, uap: UserActionProcess) {
+  const addEditGithubUser: AddEditGithubUserProcess = ctx.currGithubUserSelected;
+  const currEditGithubUser: IGithubUserDetails | null | undefined = addEditGithubUser.get(uap);
+  //NOTE: more robust check will be needed in future
+  return values.title && 
+            values.name && 
+            values.description && 
+            (currEditGithubUser ? currEditGithubUser : false);
 }
 
 const getGithubUsersByName = getGithubUsersByNameMemo();
@@ -30,6 +36,8 @@ function CommonRocketBaseForm({
     formValues?: Partial<IRocketListItem>,
     showAsEditMode?: boolean
   }) {
+
+  const rocketContext: IRocketContextData = useContext(RocketContext);
 
   const [valueAuto, setValueAuto] = useState<IGithubUserDetails | null>(null);
   const [options, setOptions] = useState<readonly IGithubUserDetails[]>([]);
@@ -92,7 +100,17 @@ function CommonRocketBaseForm({
     };
   }, [valueAuto, inputValue, fetch]);
 
-  /////////////////////-----------------------
+  const updateAutompleteAndContextValues = (githubUserSelected: IGithubUserDetails | null) => {
+    setValue('githubUserInfo', githubUserSelected?.login); // here or
+    setValueAuto(githubUserSelected);
+    if (rocketContext.setCurrGithubUserSelected) {
+      const currGithubUser: AddEditGithubUserProcess = rocketContext.currGithubUserSelected;
+      const currUserAction: UserActionProcess = showAsEditMode ? UserActionProcess.EDIT : UserActionProcess.ADD; 
+      rocketContext.setCurrGithubUserSelected(
+        new Map(currGithubUser.set(currUserAction, githubUserSelected))
+      );
+    }
+  }
 
   return (<>
     <TextField
@@ -153,8 +171,7 @@ function CommonRocketBaseForm({
       }}
       onChange={(event: any, newValue: IGithubUserDetails | null) => {
         setOptions(newValue ? getOptions([newValue, ...options]) : options);
-        setValue('githubUserInfo', newValue?.login); // here or
-        setValueAuto(newValue);
+        updateAutompleteAndContextValues(newValue);
       }}
     ></Autocomplete>
   </>);

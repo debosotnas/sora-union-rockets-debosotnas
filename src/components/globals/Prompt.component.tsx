@@ -38,13 +38,14 @@ export default function Prompt() {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
+      {title && <DialogTitle id="alert-dialog-title">
         {title}
-      </DialogTitle>
+      </DialogTitle>}
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
+        {typeof msg === 'string' ? <DialogContentText id="alert-dialog-description">
           {msg}
-        </DialogContentText>
+        </DialogContentText> :
+          <>{msg}</>}
       </DialogContent>
       <DialogActions>
         {type !== PromptTypes.INFO ?

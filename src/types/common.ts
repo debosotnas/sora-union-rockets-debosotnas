@@ -26,19 +26,29 @@ export interface IRocketListItem {
     name: string;
     description: string;
     githubUserInfo: string;
+    githubUserData: IGithubUserDetails;
     dtcreation?: Date;
     dtupdated?: Date;
 }
+
+export enum UserActionProcess {
+    EDIT = 'EDIT',
+    ADD = 'ADD'
+}
+
+export type AddEditGithubUserProcess = Map<UserActionProcess, IGithubUserDetails | null>;
 
 export interface IRocketContextData {
     rocketListData: Map<number, IRocketListItem>;
     isLoadingData: boolean;
     showEditRocketModal: IRocketListItem | boolean;
     githubSuggestions: Array<IGithubUserDetails>
+    currGithubUserSelected: AddEditGithubUserProcess;
     addOrUpdateRocket?(rocket:IRocketListItem): void;
     removeRocket?(rocket:IRocketListItem): void;
     setShowEditRocketModal?(val:IRocketListItem | boolean): void;
     setGithubSuggestions?(val:Array<IGithubUserDetails>): void;
+    setCurrGithubUserSelected?(val:AddEditGithubUserProcess): void;
 }
 
 export type TRocketItemToCreate = Omit<IRocketListItem, 'id'>;

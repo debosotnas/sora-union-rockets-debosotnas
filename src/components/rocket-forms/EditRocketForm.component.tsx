@@ -1,7 +1,7 @@
 import { ReactElement, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { RocketContext } from "@/contexts/rockets.context";
-import { IRocketContextData, IRocketListItem } from "../../types/common";
+import { IGithubUserDetails, IRocketContextData, IRocketListItem, UserActionProcess } from "../../types/common";
 import { httpUpdateRocket } from "@/httpApi/httpApi";
 import { CommonRocketBaseForm, validateFormValues } from "./CommonRocketBaseForm";
 import { Button, CircularProgress, Paper, Typography } from "@mui/material";
@@ -29,19 +29,13 @@ function EditRocketForm(
     values.preventDefault && values.preventDefault();
 
     // TODO: Add Error exception handler
-    if (formValues && formValues.id) {
-
-      if (!validateFormValues(formValues)) {
-        //TODO: Exception errors on invalid formValues
-        return;
-      }
-
+    const currEditUser: IGithubUserDetails = validateFormValues(values, rocketListContext, UserActionProcess.EDIT);
+    if (currEditUser && formValues && formValues.id) {
       const rocketToUpdate: IRocketListItem = {
         description: values.description,
         id: formValues.id,
-        // TODO: update data type to an object (according to GH user info)
-        // TODO: update with real user info
         githubUserInfo: values.githubUserInfo,
+        githubUserData: currEditUser,
         name: values.name,
         title: values.title,
         dtupdated: new Date()
@@ -50,6 +44,9 @@ function EditRocketForm(
       const updatedRocket = httpUpdateRocket(rocketToUpdate);
       if (rocketListContext.addOrUpdateRocket) {
         rocketListContext.addOrUpdateRocket(updatedRocket);
+        rocketListContext.setCurrGithubUserSelected && rocketListContext.setCurrGithubUserSelected(
+          new Map(rocketListContext.currGithubUserSelected.set(UserActionProcess.EDIT, null))
+        );
         closeEditHandler();
       }
     }
