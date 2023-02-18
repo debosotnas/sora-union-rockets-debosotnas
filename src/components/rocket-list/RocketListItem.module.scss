@@ -8,6 +8,9 @@ $rocket-list-item-height: 150px;
   @include breakpoint('medium') {
     max-width: calc(70% - 10px);
   }  
+  @include breakpoint('large') {
+    max-width: calc(50% - 10px);
+  }  
 
   .rocketListItemContent {
     position: relative;

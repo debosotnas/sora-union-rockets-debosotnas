@@ -6,7 +6,7 @@ import { Avatar, Grid, Typography, Box, Paper } from "@mui/material";
 const getGithubUserInfoByName = getGithubUserInfoMemo();
 
 export function ItemLabel({ k, v, className }: { k: string, v: string, className?: string }) {
-    return <Typography className={className}>{k ? <span><b>{k}</b> :</span> : ''}{v}</Typography>;
+    return <Typography className={className}>{k ? <span><b>{k}</b>: </span> : ''}{v}</Typography>;
 }
 
 export default function UserInfo({ githubUser }: { githubUser: string }) {
