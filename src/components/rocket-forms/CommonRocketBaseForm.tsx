@@ -172,7 +172,7 @@ function CommonRocketBaseForm({
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Githubuser"
+            label="Github"
             InputProps={{
               ...params.InputProps,
               type: 'search',

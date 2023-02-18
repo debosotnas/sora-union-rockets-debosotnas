@@ -61,10 +61,10 @@ function CreateRocketForm(): ReactElement {
                 <Typography component="h3" variant="h4" sx={{textAlign: 'center'}} gutterBottom>
                   New Rocket <b>✨🚀✨</b>
                 </Typography>
-                <Paper className={styles.formControlsContainer} elevation={0}>
+                <Paper className={styles.formControlsContainer} sx={{bgcolor: 'transparent'}} elevation={0}>
                   <CommonRocketBaseForm register={register} watch={watch} setValue={setValue} />
                 </Paper>
-                <Paper className={styles.formCTAs} elevation={0}>
+                <Paper className={styles.formCTAs} sx={{bgcolor: 'transparent'}} elevation={0}>
                   <Button variant="outlined" color="secondary" onClick={clearFormFields}>
                     Clear
                   </Button>
