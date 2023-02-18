@@ -20,6 +20,9 @@ function CreateRocketForm(): ReactElement {
   const rocketListContext: IRocketContextData = useContext(RocketContext);
     
   const clearFormFields = () => {
+    rocketListContext.setCurrGithubUserSelected && rocketListContext.setCurrGithubUserSelected(
+      new Map(rocketListContext.currGithubUserSelected.set(UserActionProcess.ADD, null))
+    );    
     reset();
   };
 
